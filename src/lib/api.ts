@@ -60,11 +60,30 @@ async function request<T>(path: string, options: RequestInit = {}, isRetry = fal
   }
 
   const isJson = res.headers.get('content-type')?.includes('application/json');
-  const body = isJson ? await res.json().catch(() => null) : null;
+  let body: unknown = null;
+
+  if (isJson) {
+    try {
+      body = await res.json();
+    } catch {
+      if (res.ok) {
+        // A 200-range response with malformed/unparseable JSON is a real
+        // server-side bug - don't let it silently become `null` downstream,
+        // where callers assume a successful response always has a valid body.
+        throw new ApiRequestError('Received an invalid response from the server.', res.status);
+      }
+      // if !res.ok, body just stays null - handled by the block below
+    }
+  }
 
   if (!res.ok) {
-    throw new ApiRequestError(body?.message || 'Something went wrong. Please try again.', res.status);
+    const message =
+      typeof body === 'object' && body !== null && 'message' in body
+        ? String((body as { message?: unknown }).message)
+        : 'Something went wrong. Please try again.';
+    throw new ApiRequestError(message, res.status);
   }
+
   return body as T;
 }
 

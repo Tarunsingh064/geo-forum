@@ -1,5 +1,27 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/auth/callback/success/page": "app/auth/callback/success/page.js",
+  "/privacy-policy/page": "app/privacy-policy/page.js",
   "/page": "app/page.js",
-  "/(auth)/signin/page": "app/(auth)/signin/page.js"
+  "/(auth)/forgot-password/page": "app/(auth)/forgot-password/page.js",
+  "/(auth)/signup/page": "app/(auth)/signup/page.js",
+  "/app/admin/page": "app/app/admin/page.js",
+  "/(auth)/reset-password/page": "app/(auth)/reset-password/page.js",
+  "/app/admin/posts/page": "app/app/admin/posts/page.js",
+  "/(auth)/verify-email/page": "app/(auth)/verify-email/page.js",
+  "/(auth)/signin/page": "app/(auth)/signin/page.js",
+  "/app/notifications/page": "app/app/notifications/page.js",
+  "/app/admin/users/page": "app/app/admin/users/page.js",
+  "/app/page": "app/app/page.js",
+  "/app/bookmarks/page": "app/app/bookmarks/page.js",
+  "/app/admin/reports/page": "app/app/admin/reports/page.js",
+  "/app/admin/privacy-policy/page": "app/app/admin/privacy-policy/page.js",
+  "/app/create/page": "app/app/create/page.js",
+  "/app/profile/[id]/page": "app/app/profile/[id]/page.js",
+  "/app/membership/page": "app/app/membership/page.js",
+  "/app/settings/page": "app/app/settings/page.js",
+  "/app/post/[id]/edit/page": "app/app/post/[id]/edit/page.js",
+  "/app/post/[id]/page": "app/app/post/[id]/page.js",
+  "/app/search/page": "app/app/search/page.js"
 }
