@@ -5,6 +5,13 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1
 // sense semantically, so they're never eligible for the silent-refresh-and-retry below.
 const NO_REFRESH_RETRY_PATHS = ['/auth/login', '/auth/refresh', '/auth/register', '/auth/verify-otp'];
 
+// Must match the backend's requireCustomHeaderOnMutations check (main.ts). A plain HTML form
+// can never set a custom header, so this is what lets the backend tell "our own frontend" apart
+// from a forged cross-site form submission now that cookies use SameSite=None in production
+// (required for the cross-domain Vercel+Railway deployment - see auth.controller.ts).
+const CSRF_HEADER = { 'X-Requested-With': 'geo-forum-frontend' };
+const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
 export class ApiRequestError extends Error {
   statusCode: number;
   constructor(message: string, statusCode: number) {
@@ -19,7 +26,11 @@ let refreshPromise: Promise<boolean> | null = null;
 
 function refreshSession(): Promise<boolean> {
   if (!refreshPromise) {
-    refreshPromise = fetch(`${API_URL}/auth/refresh`, { method: 'POST', credentials: 'include' })
+    refreshPromise = fetch(`${API_URL}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: CSRF_HEADER,
+    })
       .then((res) => res.ok)
       .catch(() => false)
       .finally(() => {
@@ -31,13 +42,15 @@ function refreshSession(): Promise<boolean> {
 
 async function request<T>(path: string, options: RequestInit = {}, isRetry = false): Promise<T> {
   const isFormData = options.body instanceof FormData;
+  const method = options.method || 'GET';
+  const csrfHeader = MUTATING_METHODS.has(method) ? CSRF_HEADER : {};
 
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     credentials: 'include', // sends/receives the httpOnly accessToken/refreshToken cookies
     headers: isFormData
-      ? { ...options.headers } // let the browser set multipart/form-data + boundary itself
-      : { 'Content-Type': 'application/json', ...options.headers },
+      ? { ...csrfHeader, ...options.headers } // let the browser set multipart/form-data + boundary itself
+      : { 'Content-Type': 'application/json', ...csrfHeader, ...options.headers },
   });
 
   // Access token likely expired mid-session: try one silent refresh, then replay the request.
