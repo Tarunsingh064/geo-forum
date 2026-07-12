@@ -37,7 +37,10 @@ interface PostCardProps {
 
 export function PostCard({ post, showOwnerActions, onDeleted }: PostCardProps) {
   const author = typeof post.author === 'string' ? null : post.author;
-  const authorId = typeof post.author === 'string' ? post.author : post.author._id;
+  // post.author can be: a raw ID string (not populated), a populated author object,
+  // or null (the referenced user was deleted and the backend's .populate() resolved it to null).
+  const authorId = typeof post.author === 'string' ? post.author : post.author?._id;
+  const hasAuthor = Boolean(authorId);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
@@ -60,15 +63,21 @@ export function PostCard({ post, showOwnerActions, onDeleted }: PostCardProps) {
 
   return (
     <article className="border-b border-black/10 py-6 first:pt-0 last:border-b-0 flex gap-4">
-      <Link href={`/app/profile/${authorId}`} className="shrink-0">
-        <Avatar name={author?.name || 'Unknown'} avatarUrl={author?.avatarUrl} size={48} />
-      </Link>
+      {hasAuthor ? (
+        <Link href={`/app/profile/${authorId}`} className="shrink-0">
+          <Avatar name={author?.name || 'Unknown'} avatarUrl={author?.avatarUrl} size={48} />
+        </Link>
+      ) : (
+        <div className="shrink-0">
+          <Avatar name="Deleted user" size={48} />
+        </div>
+      )}
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2 text-sm text-black/50 flex-wrap">
             <Badge tone="outline">{POST_TYPE_LABELS[post.type]}</Badge>
-            <span className="font-medium text-black/70">{author?.name || 'Unknown'}</span>
+            <span className="font-medium text-black/70">{author?.name || 'Deleted user'}</span>
             {author?.isVerifiedBadge && <Badge tone="plum">Verified</Badge>}
             {post.status === 'draft' && <Badge tone="outline">Draft</Badge>}
             <span>·</span>
