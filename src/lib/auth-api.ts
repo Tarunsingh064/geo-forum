@@ -5,6 +5,7 @@ export interface RegisterPayload {
   email: string;
   password: string;
   acceptedPrivacyPolicy: boolean;
+  referralCode?: string;
 }
 
 export const authApi = {

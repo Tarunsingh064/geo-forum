@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="#14171A"/>
+
+  <!-- Map pin head (geopolitics) -->
+  <path d="M 256 120
+           C 210 120 174 156 174 202
+           C 174 254 224 296 256 340
+           C 288 296 338 254 338 202
+           C 338 156 302 120 256 120 Z"
+        fill="#EDEAE2"/>
+  <circle cx="256" cy="202" r="34" fill="#14171A"/>
+
+  <!-- Hook (bait) extending down from pin tip -->
+  <path d="M 256 340
+           C 256 340 254 384 254 404
+           C 254 428 272 446 296 446
+           C 320 446 338 428 338 402
+           C 338 386 328 374 314 371"
+        fill="none"
+        stroke="#C9973F"
+        stroke-width="12"
+        stroke-linecap="round"/>
+</svg>

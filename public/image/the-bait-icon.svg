@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="#14171A"/>
+
+  <!-- Letter T -->
+  <rect x="136" y="176" width="110" height="32" rx="6" fill="#EDEAE2"/>
+  <rect x="175" y="176" width="32" height="200" rx="6" fill="#EDEAE2"/>
+
+  <!-- Letter B stem -->
+  <rect x="266" y="176" width="32" height="200" rx="6" fill="#EDEAE2"/>
+
+  <!-- Letter B upper bowl -->
+  <path d="M 298 176
+           L 322 176
+           C 356 176 378 194 378 220
+           C 378 244 358 262 328 264
+           L 298 264
+           Z"
+        fill="#EDEAE2"/>
+
+  <!-- Letter B lower bowl -->
+  <path d="M 298 264
+           L 330 264
+           C 364 266 386 286 386 314
+           C 386 344 362 376 320 376
+           L 298 376
+           Z"
+        fill="#EDEAE2"/>
+
+  <!-- Hook motif beneath monogram -->
+  <path d="M 168 400
+           C 168 400 166 440 166 456
+           C 166 476 180 490 198 490
+           C 216 490 228 476 228 458
+           C 228 446 220 436 210 434"
+        fill="none"
+        stroke="#C9973F"
+        stroke-width="9"
+        stroke-linecap="round"/>
+  <circle cx="168" cy="400" r="6" fill="#C9973F"/>
+</svg>

@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { AdminNav } from '@/components/app/AdminNav';
+import { BackButton } from '@/components/ui/Backbutton';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { ContributorBadge } from '@/components/ui/ContributorBadge';
 import { adminApi } from '@/lib/admin-api';
 import type { AdminUserRow } from '@/lib/types';
-import { BackButton } from '@/components/ui/Backbutton';
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUserRow[]>([]);
@@ -39,7 +40,7 @@ export default function AdminUsersPage() {
 
   return (
     <div>
-       <BackButton />
+      <BackButton />
       <h1 className="text-2xl font-medium mb-2" style={{ letterSpacing: '-0.02em' }}>
         Admin panel
       </h1>
@@ -74,6 +75,7 @@ export default function AdminUsersPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm">{user.name}</span>
+                    <ContributorBadge type={user.contributorType} />
                     {user.isVerifiedBadge && <Badge tone="plum">Verified</Badge>}
                     {user.isBanned && <Badge tone="outline">Banned</Badge>}
                     <Badge>{user.role}</Badge>

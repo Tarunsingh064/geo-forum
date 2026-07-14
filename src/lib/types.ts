@@ -1,3 +1,5 @@
+export type ContributorType = 'none' | 'author' | 'journalist';
+
 export interface User {
   _id: string;
   name: string;
@@ -12,6 +14,7 @@ export interface User {
   subscriptionTier?: 'free' | 'verified';
   reputationScore: number;
   badges: string[];
+  contributorType?: ContributorType;
   followers?: number | string[];
   following?: number | string[];
   createdAt?: string;
@@ -111,6 +114,7 @@ export interface PostAuthor {
   isVerifiedBadge?: boolean;
   reputationScore?: number;
   badges?: string[];
+  contributorType?: ContributorType;
 }
 
 export interface Post {
@@ -258,6 +262,39 @@ export interface CreateOrderResponse {
   currency: string;
   keyId: string;
   subscriptionId: string;
+}
+
+// ---- Contributor applications (Author/Journalist badge applications) ----
+
+export type ApplicationStatus = 'pending' | 'approved' | 'rejected';
+
+export interface ContributorApplication {
+  _id: string;
+  user: PostAuthor | string;
+  requestedRole: 'author' | 'journalist';
+  motivation: string;
+  portfolioLinks: string[];
+  status: ApplicationStatus;
+  isPaidAtApplication: boolean;
+  reviewedBy?: { _id: string; name: string } | string;
+  reviewedAt?: string;
+  reviewNotes?: string;
+  createdAt: string;
+}
+
+// ---- Referral codes (Author/Journalist onboarding) ----
+
+export interface ReferralCode {
+  _id: string;
+  code: string;
+  role: 'author' | 'journalist';
+  createdBy: { _id: string; name: string; email: string } | string;
+  usedBy?: { _id: string; name: string; email: string } | string;
+  usedAt?: string;
+  expiresAt?: string;
+  note?: string;
+  isRevoked: boolean;
+  createdAt: string;
 }
 
 // ---- Search ----

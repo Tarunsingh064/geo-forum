@@ -8,7 +8,8 @@ const ADMIN_LINKS = [
   { href: '/app/admin/users', label: 'Users' },
   { href: '/app/admin/reports', label: 'Reports' },
   { href: '/app/admin/posts', label: 'Posts' },
-  { href: '/app/admin/privacy-policy', label: 'Privacy Policy' },
+  { href: '/app/admin/referrals', label: 'Referrals' },
+  { href: '/app/admin/applications', label: 'Applications' },
 ];
 
 export function AdminNav() {

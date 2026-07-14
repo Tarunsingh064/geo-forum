@@ -1,5 +1,5 @@
 self.addEventListener('push', (event) => {
-  let data = { title: 'Geo Forum', body: 'You have a new notification.', link: '/app/notifications' };
+  let data = { title: 'The Bait', body: 'You have a new notification.', link: '/app/notifications' };
   try {
     if (event.data) data = { ...data, ...event.data.json() };
   } catch {
@@ -9,7 +9,7 @@ self.addEventListener('push', (event) => {
   event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: '/icon.png',
+      icon: '/the-bait-icon-v2.png',
       data: { link: data.link },
     }),
   );

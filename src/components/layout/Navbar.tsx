@@ -18,12 +18,12 @@ export function Navbar() {
   return (
     <nav className={`${stencil.variable} absolute top-0 left-0 right-0 z-20 px-6 py-5`}>
       <div className="max-w-content mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <LogoIcon className="w-7 h-7 text-black" />
-          <span className="font-[family-name:var(--font-stencil)] text-2xl tracking-wide text-black uppercase">
-            Geo Forum
-          </span>
-        </Link>
+        <Link href="/" className="flex items-center gap-3 shrink-0">
+  <LogoIcon className="w-12 h-12 text-black" />
+  <span className="font-[family-name:var(--font-stencil)] text-2xl tracking-wide text-black uppercase">
+    The Bait
+  </span>
+</Link>
 
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (

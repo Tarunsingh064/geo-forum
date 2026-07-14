@@ -6,7 +6,7 @@ export function UseCasesSection() {
     <section className="bg-[#F5F5F5] px-6 py-24">
       <div className="max-w-content mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div className="md:pr-12 md:pt-2">
-          <p className="text-black/60 text-sm mb-2">Geo Forum in Practice</p>
+          <p className="text-black/60 text-sm mb-2">The Bait in Practice</p>
           <h2
             className="text-5xl md:text-6xl font-medium leading-none mb-6"
             style={{ letterSpacing: '-0.04em' }}
@@ -14,7 +14,7 @@ export function UseCasesSection() {
             Who it&apos;s for
           </h2>
           <p className="text-black/60 text-base leading-relaxed max-w-sm">
-            Geo Forum powers focused discussion for students, researchers, journalists, and UPSC
+            The Bait powers focused discussion for students, researchers, journalists, and UPSC
             aspirants who want structured debate instead of scattered comment threads.
           </p>
         </div>

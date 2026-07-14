@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, FormEvent, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { GoogleButton } from '@/components/auth/GoogleButton';
@@ -11,11 +11,13 @@ import { SubmitButton } from '@/components/ui/SubmitButton';
 import { authApi } from '@/lib/auth-api';
 import { ApiRequestError } from '@/lib/api';
 
-export default function SignUpPage() {
+function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [referralCode, setReferralCode] = useState(searchParams.get('ref') || '');
   const [acceptedPolicy, setAcceptedPolicy] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,13 @@ export default function SignUpPage() {
 
     setIsLoading(true);
     try {
-      await authApi.register({ name, email, password, acceptedPrivacyPolicy: acceptedPolicy });
+      await authApi.register({
+        name,
+        email,
+        password,
+        acceptedPrivacyPolicy: acceptedPolicy,
+        referralCode: referralCode.trim() || undefined,
+      });
       router.push(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (err) {
       setError(err instanceof ApiRequestError ? err.message : 'Something went wrong.');
@@ -69,6 +77,19 @@ export default function SignUpPage() {
           minLength={8}
         />
 
+        <div>
+          <Input
+            label="Referral code (optional)"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value)}
+            placeholder="e.g. AUTH-7K2QXM"
+          />
+          <p className="text-xs text-black/40 mt-1.5">
+            Have an Author or Journalist code from The Bait? Enter it here to get your badge
+            right away.
+          </p>
+        </div>
+
         <label className="flex items-start gap-3 text-sm text-black/70">
           <input
             type="checkbox"
@@ -89,5 +110,13 @@ export default function SignUpPage() {
         <SubmitButton isLoading={isLoading}>Create account</SubmitButton>
       </form>
     </AuthCard>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignUpForm />
+    </Suspense>
   );
 }

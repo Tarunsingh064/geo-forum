@@ -26,7 +26,7 @@ export function InfoSection() {
               className="font-[family-name:var(--font-stencil)] text-black text-4xl md:text-5xl leading-tight mb-8 uppercase"
               style={{ letterSpacing: '0.01em' }}
             >
-              Meet Geo Forum.
+              Meet The Bait.
             </h2>
             <PillButton href="/signup" withArrow>
               Explore the forum
@@ -34,7 +34,7 @@ export function InfoSection() {
           </div>
 
           <p className="font-[family-name:var(--font-typewriter)] text-black/70 text-2xl md:text-3xl leading-relaxed">
-            Geo Forum is a structured home for geopolitics — organized by region and topic instead
+            The Bait is a structured home for geopolitics — organized by region and topic instead
             of scattered across a hundred unrelated subreddits.
           </p>
         </div>

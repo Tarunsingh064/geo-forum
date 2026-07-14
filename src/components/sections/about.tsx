@@ -58,7 +58,7 @@ export function AboutSection() {
             className="font-[family-name:var(--font-calligraphic)] text-6xl md:text-7xl text-white mb-2"
             style={{ letterSpacing: '0.01em' }}
           >
-            About Geo Forum
+            About The Bait
           </h1>
           <div className="w-24 h-px bg-white/30 mx-auto mt-6" />
         </div>
@@ -66,7 +66,7 @@ export function AboutSection() {
         {/* Intro */}
         <div className="font-[family-name:var(--font-cursive)] text-white/90 text-2xl leading-relaxed space-y-6 mb-16">
           <p>
-            Geo Forum is a community built for people who want to understand the world beyond
+            The Bait is a community built for people who want to understand the world beyond
             headlines. We bring together students, researchers, professionals, and curious minds
             to discuss geopolitics, international relations, global economics, defense,
             diplomacy, technology, and world affairs.
@@ -75,7 +75,7 @@ export function AboutSection() {
             Our goal is to create a space where informed discussions, diverse perspectives, and
             evidence-based analysis take priority over misinformation and sensationalism. Whether
             you&apos;re following breaking international events, exploring historical context, or
-            debating the future of global power, Geo Forum provides a platform to learn, share,
+            debating the future of global power, The Bait provides a platform to learn, share,
             and engage.
           </p>
           <p>
@@ -130,7 +130,7 @@ export function AboutSection() {
         {/* Closing */}
         <div className="text-center border-t border-white/15 pt-12">
           <p className="font-[family-name:var(--font-cursive)] text-white/90 text-2xl leading-relaxed max-w-2xl mx-auto">
-            Geo Forum is independent and community-driven. We believe understanding global affairs
+            The Bait is independent and community-driven. We believe understanding global affairs
             requires curiosity, critical thinking, and respectful discussion. Whether
             you&apos;re new to geopolitics or have years of experience studying international
             relations, there&apos;s a place for you here.

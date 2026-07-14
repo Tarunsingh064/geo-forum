@@ -10,6 +10,7 @@ import { VoteButtons } from './VoteButtons';
 import { postsApi } from '@/lib/posts-api';
 import { POST_TYPE_LABELS } from '@/lib/types';
 import { CategoryBadge } from '@/components/ui/Categorybadge';
+import { ContributorBadge } from '@/components/ui/ContributorBadge';
 import type { Post } from '@/lib/types';
 
 function timeAgo(dateString: string) {
@@ -37,10 +38,7 @@ interface PostCardProps {
 
 export function PostCard({ post, showOwnerActions, onDeleted }: PostCardProps) {
   const author = typeof post.author === 'string' ? null : post.author;
-  // post.author can be: a raw ID string (not populated), a populated author object,
-  // or null (the referenced user was deleted and the backend's .populate() resolved it to null).
-  const authorId = typeof post.author === 'string' ? post.author : post.author?._id;
-  const hasAuthor = Boolean(authorId);
+  const authorId = typeof post.author === 'string' ? post.author : post.author._id;
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
@@ -62,22 +60,17 @@ export function PostCard({ post, showOwnerActions, onDeleted }: PostCardProps) {
   }
 
   return (
-    <article className="border-b border-black/10 py-6 first:pt-0 last:border-b-0 flex gap-4">
-      {hasAuthor ? (
-        <Link href={`/app/profile/${authorId}`} className="shrink-0">
-          <Avatar name={author?.name || 'Unknown'} avatarUrl={author?.avatarUrl} size={48} />
-        </Link>
-      ) : (
-        <div className="shrink-0">
-          <Avatar name="Deleted user" size={48} />
-        </div>
-      )}
+    <article className="bg-white rounded-2xl border border-black/10 p-6 flex gap-4">
+      <Link href={`/app/profile/${authorId}`} className="shrink-0">
+        <Avatar name={author?.name || 'Unknown'} avatarUrl={author?.avatarUrl} size={48} />
+      </Link>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2 text-sm text-black/50 flex-wrap">
             <Badge tone="outline">{POST_TYPE_LABELS[post.type]}</Badge>
-            <span className="font-medium text-black/70">{author?.name || 'Deleted user'}</span>
+            <span className="font-medium text-black/70">{author?.name || 'Unknown'}</span>
+            <ContributorBadge type={author?.contributorType} />
             {author?.isVerifiedBadge && <Badge tone="plum">Verified</Badge>}
             {post.status === 'draft' && <Badge tone="outline">Draft</Badge>}
             <span>·</span>

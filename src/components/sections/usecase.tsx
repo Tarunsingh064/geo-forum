@@ -100,13 +100,13 @@ export function UseCasesSection() {
             Use Cases
           </h1>
           <span className="font-[family-name:var(--font-typewriter)] text-black/50 text-sm uppercase tracking-widest mb-2">
-            File No. 002 — Geo Forum
+            File No. 002 — The Bait
           </span>
         </div>
 
         {/* Intro — left-aligned, indented like a memo opening line */}
         <p className="font-[family-name:var(--font-typewriter)] text-black/80 text-lg leading-relaxed mb-20 max-w-2xl">
-          Geo Forum is designed for anyone who wants to stay informed, learn, and engage in
+          The Bait is designed for anyone who wants to stay informed, learn, and engage in
           meaningful discussions about global affairs. Whether you&apos;re a student, researcher,
           professional, or simply curious about the world, the platform offers a space to explore
           different perspectives and share knowledge.
@@ -151,7 +151,7 @@ export function UseCasesSection() {
         {/* Closing — stamped note in a boxed frame */}
         <div className="border-2 border-black/70 p-8 max-w-2xl">
           <p className="font-[family-name:var(--font-typewriter)] text-black/80 text-lg leading-relaxed">
-            Geo Forum is built to encourage thoughtful conversations, evidence-based analysis, and
+            The Bait is built to encourage thoughtful conversations, evidence-based analysis, and
             respectful debate, helping members better understand the complex issues shaping our
             world.
           </p>
