@@ -17,13 +17,16 @@ import { useAuth } from '@/hooks/useAuth';
  *  - signed in + NOT verified -> redirect to /verify-email specifically, UNLESS they're already
  *    there, since that's the one auth page they're still allowed to use.
  *
- * Deliberately renders children immediately rather than blocking on isLoading, since these are
- * public pages - an anonymous visitor shouldn't see a loading spinner before a sign-in form.
+ * Shows a loader while the auth check is in flight, and while a redirect is pending, so a
+ * signed-in user never sees a flash of the sign-in form before being sent to /app.
  */
 export function GuestGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+
+  const needsRedirect =
+    isAuthenticated && (user?.isEmailVerified ? true : pathname !== '/verify-email');
 
   useEffect(() => {
     if (isLoading || !isAuthenticated) return;
@@ -34,6 +37,14 @@ export function GuestGuard({ children }: { children: React.ReactNode }) {
       router.replace('/verify-email');
     }
   }, [isLoading, isAuthenticated, user, pathname, router]);
+
+  if (isLoading || needsRedirect) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="w-8 h-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

@@ -1,118 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-// Server-only var (no NEXT_PUBLIC_ prefix needed since this runs on the server/edge).
-// Make sure API_URL is set in your Vercel production environment to https://api.thebait.space/api/v1
-const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
-
-const AUTH_PATHS = ['/signin', '/signup', '/forgot-password', '/reset-password'];
-const VERIFY_PATH = '/verify-email';
-const PROTECTED_PATHS = ['/app', '/dashboard'];
-
-interface SessionUser {
-  isEmailVerified: boolean;
+/**
+ * Why this file does almost nothing:
+ *
+ * This app is deployed with the frontend and backend on two unrelated domains (e.g. a Vercel
+ * subdomain and a Railway subdomain) that share no parent domain. Session cookies are set by
+ * the BACKEND, so they're scoped to the backend's domain - the browser will never attach them
+ * to a request for a page on the FRONTEND's domain, no matter what SameSite/Secure settings are
+ * used. That's not a bug to work around; it's just how cookies work. It also means server-side
+ * middleware here can never reliably read the session (an earlier version tried to fetch
+ * /users/me forwarding the incoming request's cookies, which worked in local dev only because
+ * localhost:3000 and localhost:5000 happen to share the same cookie domain by an accident of
+ * how browsers treat ports - that assumption doesn't hold once frontend and backend are on
+ * genuinely different domains in production).
+ *
+ * So all auth gating now happens client-side instead, where it belongs: AuthGuard (wraps
+ * src/app/app/layout.tsx) protects the authenticated area, and GuestGuard (wraps
+ * src/app/(auth)/layout.tsx) keeps signed-in users off the auth pages. Both call the backend
+ * directly via fetch() with credentials: 'include', which correctly carries the backend's own
+ * cookies regardless of domain topology - that's the one place in this app that was never
+ * actually broken.
+ *
+ * If you later put both frontend and backend behind a shared custom domain (e.g.
+ * app.example.com and api.example.com), cookies could be scoped to the shared parent domain
+ * (.example.com) and a real server-side middleware check would become viable again.
+ */
+export function middleware() {
+  return NextResponse.next();
 }
 
-interface SessionResult {
-  user: SessionUser | null;
-  setCookie?: string;
-}
-
-async function fetchMe(cookieHeader: string): Promise<SessionUser | null> {
-  try {
-    const res = await fetch(`${API_URL}/users/me`, {
-      headers: { cookie: cookieHeader },
-      cache: 'no-store',
-    });
-    if (!res.ok) return null;
-    return (await res.json()) as SessionUser;
-  } catch {
-    // backend unreachable - fail open on read-only pages, the API itself remains the source of truth
-    return null;
-  }
-}
-
-async function getSessionUser(request: NextRequest): Promise<SessionResult> {
-  const cookieHeader = request.headers.get('cookie');
-  if (!cookieHeader) return { user: null };
-
-  // 1. Try the access token first, if present
-  if (cookieHeader.includes('accessToken')) {
-    const user = await fetchMe(cookieHeader);
-    if (user) return { user };
-  }
-
-  // 2. Access token missing or expired - try to refresh if we have a refresh cookie
-  if (cookieHeader.includes('refreshToken')) {
-    try {
-      const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
-        method: 'POST',
-        headers: { cookie: cookieHeader },
-        cache: 'no-store',
-      });
-
-      if (refreshRes.ok) {
-        const setCookie = refreshRes.headers.get('set-cookie') ?? undefined;
-        // Use the freshly issued cookies (if any) to re-check the session
-        const newCookieHeader = setCookie || cookieHeader;
-        const user = await fetchMe(newCookieHeader);
-        return { user, setCookie };
-      }
-    } catch {
-      // backend unreachable during refresh - treat as logged out for this request
-      return { user: null };
-    }
-  }
-
-  return { user: null };
-}
-
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const isAuthPath = AUTH_PATHS.some((p) => pathname.startsWith(p));
-  const isVerifyPath = pathname.startsWith(VERIFY_PATH);
-  const isProtectedPath = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
-
-  const { user, setCookie } = await getSessionUser(request);
-
-  const withRefreshedCookies = (response: NextResponse) => {
-    if (setCookie) {
-      response.headers.set('set-cookie', setCookie);
-    }
-    return response;
-  };
-
-  // Logged in + verified: keep them out of every auth page (including the OTP screen)
-  if (user && (isAuthPath || isVerifyPath)) {
-    if (user.isEmailVerified) {
-      return withRefreshedCookies(NextResponse.redirect(new URL('/app', request.url)));
-    }
-    // Logged in but not verified yet: only the verify-email screen is reachable
-    if (!isVerifyPath) {
-      return withRefreshedCookies(NextResponse.redirect(new URL('/verify-email', request.url)));
-    }
-  }
-
-  // Logged in but unverified, trying to reach a protected page: send them to verify first
-  if (user && !user.isEmailVerified && isProtectedPath) {
-    return withRefreshedCookies(NextResponse.redirect(new URL('/verify-email', request.url)));
-  }
-
-  // Not logged in, trying to reach a protected page: send them to sign in
-  if (!user && isProtectedPath) {
-    return withRefreshedCookies(NextResponse.redirect(new URL('/signin', request.url)));
-  }
-
-  return withRefreshedCookies(NextResponse.next());
-}
-
+// Matcher intentionally left empty - middleware still runs (harmlessly) but no longer performs
+// a check that can't work in this deployment topology.
 export const config = {
-  matcher: [
-    '/signin',
-    '/signup',
-    '/forgot-password',
-    '/reset-password',
-    '/verify-email',
-    '/app/:path*',
-    '/dashboard/:path*',
-  ],
+  matcher: [],
 };
+
+
