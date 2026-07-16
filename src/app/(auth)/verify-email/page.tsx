@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthCard } from '@/components/auth/AuthCard';
 import { OtpInput } from '@/components/auth/OtpInput';
@@ -23,6 +23,13 @@ function VerifyEmailForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
 
+  // Synchronous guard against double-submission (auto-submit-on-complete firing
+  // alongside a form submit, double Enter, double click, etc). React state
+  // (isLoading) updates asynchronously and can't reliably block a second call
+  // that happens in the same tick - a ref can, since it's checked and set
+  // synchronously before anything async happens.
+  const isSubmittingRef = useRef(false);
+
   useEffect(() => {
     if (cooldown <= 0) return;
     const timer = setInterval(() => setCooldown((c) => c - 1), 1000);
@@ -31,6 +38,9 @@ function VerifyEmailForm() {
 
   const handleVerify = useCallback(
     async (otp: string) => {
+      if (isSubmittingRef.current) return;
+      isSubmittingRef.current = true;
+
       setError('');
       setIsLoading(true);
       try {
@@ -41,6 +51,7 @@ function VerifyEmailForm() {
         setError(err instanceof ApiRequestError ? err.message : 'Verification failed.');
       } finally {
         setIsLoading(false);
+        isSubmittingRef.current = false;
       }
     },
     [email, refresh, router],
@@ -49,6 +60,7 @@ function VerifyEmailForm() {
   async function handleResend() {
     setError('');
     setMessage('');
+    setCode(''); // a resend invalidates whatever was already typed - don't let a stale code get submitted
     try {
       await authApi.resendOtp(email);
       setMessage('A new code is on its way to your inbox.');

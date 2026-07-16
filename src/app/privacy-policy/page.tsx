@@ -24,7 +24,7 @@ export default async function PrivacyPolicyPage() {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center gap-2 mb-10">
           <LogoIcon className="w-7 h-7 text-black" />
-          <span className="text-2xl font-medium tracking-tight text-black">Geo Forum</span>
+          <span className="text-2xl font-medium tracking-tight text-black">The Bait</span>
         </div>
 
         <h1 className="text-3xl md:text-4xl font-medium mb-6" style={{ letterSpacing: '-0.02em' }}>

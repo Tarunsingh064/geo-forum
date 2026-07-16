@@ -7,22 +7,15 @@ import { Bell, Bookmark, Plus, Search } from 'lucide-react';
 import { LogoIcon } from '@/components/icons/LogoIcon';
 import { Avatar } from '@/components/ui/Avatar';
 import { useAuth } from '@/hooks/useAuth';
-import { notificationApi } from '@/lib/notification-api';
+import { useNotificationContext } from '@/lib/notification-context';
 
 export function AppNavbar() {
   const router = useRouter();
   const { user, logout } = useAuth();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const { unreadCount } = useNotificationContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState('');
   const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    notificationApi
-      .getMine()
-      .then((items) => setUnreadCount(items.filter((n) => !n.isRead).length))
-      .catch(() => null);
-  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -47,7 +40,7 @@ export function AppNavbar() {
       <div className="max-w-content mx-auto flex items-center gap-6">
         <Link href="/app" className="flex items-center gap-2 shrink-0">
           <LogoIcon className="w-6 h-6 text-black" />
-          <span className="text-xl font-medium tracking-tight text-black hidden sm:inline">The Bait</span>
+          <span className="text-xl font-medium tracking-tight text-black hidden sm:inline">Geo Forum</span>
         </Link>
 
         <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md relative">
@@ -104,6 +97,11 @@ export function AppNavbar() {
                 <Link href="/app/membership" className="block px-4 py-2 text-sm text-black/80 hover:bg-black/5">
                   Membership
                 </Link>
+                {(!user?.contributorType || user.contributorType === 'none') && (
+                  <Link href="/app/apply" className="block px-4 py-2 text-sm text-black/80 hover:bg-black/5">
+                    Apply as Author/Journalist
+                  </Link>
+                )}
                 {user?.role === 'admin' && (
                   <Link href="/app/admin" className="block px-4 py-2 text-sm text-black/80 hover:bg-black/5">
                     Admin panel
