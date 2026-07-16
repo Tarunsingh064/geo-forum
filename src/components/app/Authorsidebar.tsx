@@ -7,6 +7,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ContributorBadge } from '@/components/ui/ContributorBadge';
+import { TipDialog } from './TipDialog';
 import { usersApi } from '@/lib/users-api';
 import { followApi } from '@/lib/follow-api';
 import { useAuth } from '@/hooks/useAuth';
@@ -129,14 +130,21 @@ export function AuthorSidebar({ authorId }: AuthorSidebarProps) {
       )}
 
       {!isOwnProfile && (
-        <Button
-          variant={isFollowing ? 'secondary' : 'primary'}
-          onClick={handleFollowToggle}
-          disabled={isFollowPending}
-          className="w-full justify-center mb-4"
-        >
-          {isFollowing ? 'Following' : 'Follow'}
-        </Button>
+        <div className="flex flex-col gap-2 mb-4">
+          <Button
+            variant={isFollowing ? 'secondary' : 'primary'}
+            onClick={handleFollowToggle}
+            disabled={isFollowPending}
+            className="w-full justify-center"
+          >
+            {isFollowing ? 'Following' : 'Follow'}
+          </Button>
+          {profile.contributorType && profile.contributorType !== 'none' && (
+            <div className="flex justify-center">
+              <TipDialog recipientId={authorId} recipientName={profile.name || 'this contributor'} />
+            </div>
+          )}
+        </div>
       )}
 
       <div className="grid grid-cols-2 gap-2 mb-2 border-t border-black/10 pt-4">

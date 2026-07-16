@@ -1,6 +1,6 @@
 import type { BrandItem } from './types';
 
-export const NAV_LINKS = ['About', 'Use Cases'] as const;
+export const NAV_LINKS = ['About', ] as const;
 
 // "As featured in" style press marquee - real outlets, purely as a "where geopolitics is
 // discussed" cultural reference, not a claim of partnership.

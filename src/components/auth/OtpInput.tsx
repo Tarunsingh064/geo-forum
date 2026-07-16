@@ -1,6 +1,19 @@
+// OtpInput.tsx
 'use client';
 
 import { useRef } from 'react';
+import { Special_Elite } from 'next/font/google';
+
+const typewriter = Special_Elite({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-typewriter',
+});
+
+const BLUE = '#4A6B8A';
+const GOLD = '#C79A45';
+const INK = '#1C1C1A';
+const CREAM = '#EDE9E1';
 
 interface OtpInputProps {
   value: string;
@@ -38,7 +51,7 @@ export function OtpInput({ value, onChange, length = 6 }: OtpInputProps) {
   }
 
   return (
-    <div className="flex gap-2 justify-between" onPaste={handlePaste}>
+    <div className={`${typewriter.variable} flex gap-2 justify-between`} onPaste={handlePaste}>
       {digits.map((digit, i) => (
         <input
           key={i}
@@ -50,7 +63,20 @@ export function OtpInput({ value, onChange, length = 6 }: OtpInputProps) {
           value={digit.trim()}
           onChange={(e) => handleChange(i, e.target.value)}
           onKeyDown={(e) => handleKeyDown(i, e)}
-          className="w-12 h-14 text-center text-xl font-medium rounded-xl border border-black/10 bg-white outline-none transition-colors duration-200 focus:border-black/40"
+          className="font-[family-name:var(--font-typewriter)] w-12 h-14 text-center text-xl rounded-sm border outline-none transition-all duration-150"
+          style={{
+            backgroundColor: CREAM,
+            borderColor: `${INK}22`,
+            color: INK,
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = BLUE;
+            e.currentTarget.style.boxShadow = `0 0 0 3px ${BLUE}22`;
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderColor = digit.trim() ? `${GOLD}` : `${INK}22`;
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           aria-label={`Digit ${i + 1} of verification code`}
         />
       ))}

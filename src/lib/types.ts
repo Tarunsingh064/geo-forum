@@ -261,7 +261,23 @@ export interface CreateOrderResponse {
   amount: number;
   currency: string;
   keyId: string;
-  subscriptionId: string;
+  subscriptionId?: string;
+  tipId?: string;
+}
+
+// ---- Tips ----
+
+export type TipStatus = 'created' | 'paid' | 'failed';
+
+export interface Tip {
+  _id: string;
+  tipper: PostAuthor | string;
+  recipient: PostAuthor | string;
+  post?: string;
+  amountInPaise: number;
+  message?: string;
+  status: TipStatus;
+  createdAt: string;
 }
 
 // ---- Contributor applications (Author/Journalist badge applications) ----
