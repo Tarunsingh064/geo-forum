@@ -40,7 +40,7 @@ export function AppNavbar() {
       <div className="max-w-content mx-auto flex items-center gap-6">
         <Link href="/app" className="flex items-center gap-2 shrink-0">
           <LogoIcon className="w-6 h-6 text-black" />
-          <span className="text-xl font-medium tracking-tight text-black hidden sm:inline">Geo Forum</span>
+          <span className="text-xl font-medium tracking-tight text-black hidden sm:inline">The Bait </span>
         </Link>
 
         <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md relative">

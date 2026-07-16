@@ -1,36 +1,30 @@
 {
   "pages": {
-    "/layout": [
+    "/app/admin/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
-    ],
-    "/auth/callback/success/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/auth/callback/success/page.js"
-    ],
-    "/app/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/app/page.js"
+      "static/chunks/app/app/admin/page.js"
     ],
     "/app/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/app/layout.js"
     ],
-    "/app/apply/page": [
+    "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/app/apply/page.js"
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
-    "/page": [
+    "/app/admin/applications/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/page.css",
-      "static/chunks/app/page.js"
+      "static/chunks/app/app/admin/applications/page.js"
+    ],
+    "/app/admin/users/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/app/admin/users/page.js"
     ],
     "/(auth)/signin/page": [
       "static/chunks/webpack.js",
@@ -42,35 +36,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(auth)/layout.js"
     ],
-    "/app/admin/page": [
+    "/auth/callback/success/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/app/admin/page.js"
+      "static/chunks/app/auth/callback/success/page.js"
     ],
-    "/app/admin/applications/page": [
+    "/app/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/app/admin/applications/page.js"
+      "static/chunks/app/app/page.js"
     ],
-    "/(auth)/signup/page": [
+    "/app/admin/posts/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/signup/page.js"
+      "static/chunks/app/app/admin/posts/page.js"
     ],
-    "/(auth)/verify-email/page": [
+    "/app/admin/reports/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/verify-email/page.js"
+      "static/chunks/app/app/admin/reports/page.js"
     ],
-    "/app/post/[id]/page": [
+    "/app/admin/referrals/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/app/post/[id]/page.js"
-    ],
-    "/privacy-policy/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/privacy-policy/page.js"
+      "static/chunks/app/app/admin/referrals/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",
