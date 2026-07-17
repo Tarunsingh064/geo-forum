@@ -10,6 +10,7 @@ const ADMIN_LINKS = [
   { href: '/app/admin/posts', label: 'Posts' },
   { href: '/app/admin/referrals', label: 'Referrals' },
   { href: '/app/admin/applications', label: 'Applications' },
+  { href: '/app/admin/privacy-policy', label: 'Privacy Policy' },
 ];
 
 export function AdminNav() {
