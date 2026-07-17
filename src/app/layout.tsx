@@ -65,7 +65,7 @@ export default function RootLayout({
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "The Bait",
-      alternateName: "The Bait",
+      alternateName: ["TheBait", "thebait.space"],
       url: "https://thebait.space",
     }),
   }}
